@@ -1,0 +1,112 @@
+BC Google Video Sitemap extension README
+
+What is the BC Google Video Sitemap extension?
+================================
+
+BC Google Video Sitemap is a true eZ Publish extension
+that provides a cronjob to create a Google Video Sitemap
+
+
+BC Google Video Sitemap version
+=======================
+
+The current version of BC Google Video Sitemap is 0.0.4
+Last Major update: August 18, 2014
+
+
+Copyright
+=========
+
+BC Google Video Sitemap is copyright 1999 - 2015 Brookins Consulting and Think Creative
+
+See: doc/COPYRIGHT for more information on the terms of the copyright and license
+
+
+License
+=======
+
+BC Google Video Sitemap is licensed under the GNU General Public License.
+
+The complete license agreement is included in the doc/LICENSE file.
+
+BC Google Video Sitemap is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 2 of the License, or
+(at your option) any later version.
+
+BC Google Video Sitemap is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+The GNU GPL gives you the right to use, modify and redistribute
+BC Google Video Sitemap under certain conditions. The GNU GPL license
+is distributed with the software, see the file doc/LICENSE.
+
+It is also available at http://www.gnu.org/licenses/gpl.txt
+
+You should have received a copy of the GNU General Public License
+along with BC Google Video Sitemap in doc/LICENSE.  If not, see http://www.gnu.org/licenses/.
+
+Using BC Google Video Sitemap under the terms of the GNU GPL is free (as in freedom).
+
+For more information or questions please contact
+license@brookinsconsulting.com
+
+
+Requirements
+============
+
+The following requirements exists for using BC Google Video Sitemap extension:
+
+o  eZ Publish version:
+
+   Make sure you use eZ Publish version 4.x (required) or higher. eZ Publish 5.2.x+ (Community Build, 2012.06+) is recommended.
+
+o  PHP version:
+
+   Make sure you have PHP 5.x or higher.
+
+
+Usage - Cronjob part
+============
+
+# Enable extension
+
+# Clear all caches
+
+# Autoloads do -not- need to be regenerated
+
+# Optional - Review / Alter extension settings
+
+less extension/bcgooglevideositemap/settings/bcgooglevideositemaps.ini.append.php
+
+# Alter httpd virtual host configuration mod_rewrite rules. Add the following rule:
+
+RewriteRule ^/var/sitemapvideo\.xml - [L]
+
+# Restart httpd to make virtual host configuration mod_rewrite rule changes take affect
+
+# Run cronjob to generate google video sitemap
+
+php ./runcronjobs.php googlevideositemap
+
+# Examine sitemap content for accuracy
+
+less var/sitemapvideo.xml
+
+Troubleshooting
+===============
+
+1. Read the FAQ
+   ------------
+
+   Some problems are more common than others. The most common ones
+   are listed in the the doc/FAQ.
+
+2. Support
+   -------
+
+   If you have find any problems not handled by this document or the FAQ you
+   can contact Brookins Consulting through the support system:
+   http://brookinsconsulting.com/contact
