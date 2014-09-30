@@ -1,3 +1,6 @@
 BC Google Video Sitemap extension FAQ
 
-- This extension depends on the Think Creative multimedia extension. Available here: https://github.com/ThinkCreative/multimedia
+- This extension is built upon and depends on the Think Creative multimedia extension. Available here: https://github.com/ThinkCreative/multimedia
+
+- This extension is designed to generate video sitemaps based on embed video object content (content embed within ezxmltext attributes)
+

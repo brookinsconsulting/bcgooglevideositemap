@@ -10,8 +10,8 @@ that provides a cronjob to create a Google Video Sitemap
 BC Google Video Sitemap version
 =======================
 
-The current version of BC Google Video Sitemap is 0.0.4
-Last Major update: August 18, 2014
+The current version of BC Google Video Sitemap is 0.1.0
+Last Major update: September 30, 2014
 
 
 Copyright
@@ -79,7 +79,7 @@ Usage - Cronjob part
 
 # Optional - Review / Alter extension settings
 
-less extension/bcgooglevideositemap/settings/bcgooglevideositemaps.ini.append.php
+Settings file: extension/bcgooglevideositemap/settings/bcgooglevideositemaps.ini.append.php
 
 # Alter httpd virtual host configuration mod_rewrite rules. Add the following rule:
 

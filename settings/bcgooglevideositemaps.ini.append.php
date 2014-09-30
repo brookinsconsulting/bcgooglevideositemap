@@ -12,31 +12,34 @@ SiteSectionExcludeID=13
 SiteFetchDepth=10
 SiteFetchLimit=50000
 SiteVideoPlayerSWF=//assets-jp.jwpsrv.com/player/6/694867/jwplayer.flash.swf
+VideoObjectClassIdentifiers[]
+VideoObjectClassIdentifiers[]=botr
+VideoObjectClassIdentifiers[]=video
+VideoObjectClassAttributeIdentifier=video
 
 [Classes]
 # include or exclude objects of classes listed in ClassFilterArray
-ClassFilterType=include
+ClassFilterType=exclude
 
 # Setting array to include/exclude classes in video sitemap
 ClassFilterArray[]
 ClassFilterArray[]=botr
-
-#ClassFilterArray[]=image
-#ClassFilterArray[]=banner
-#ClassFilterArray[]=sub_banner
-#ClassFilterArray[]=footer
-#ClassFilterArray[]=infobox
-#ClassFilterArray[]=landing
-#ClassFilterArray[]=faq_question
-#ClassFilterArray[]=availability
-#ClassFilterArray[]=comment
-#ClassFilterArray[]=quiz_question
-#ClassFilterArray[]=ex_cal
-#ClassFilterArray[]=file
+ClassFilterArray[]=image
+ClassFilterArray[]=banner
+ClassFilterArray[]=sub_banner
+ClassFilterArray[]=footer
+ClassFilterArray[]=infobox
+ClassFilterArray[]=landing
+ClassFilterArray[]=faq_question
+ClassFilterArray[]=availability
+ClassFilterArray[]=comment
+ClassFilterArray[]=quiz_question
+ClassFilterArray[]=ex_cal
+ClassFilterArray[]=file
+ClassFilterArray[]=forum
 #ClassFilterArray[]=folder
 #ClassFilterArray[]=botr
 #ClassFilterArray[]=image
-#ClassFilterArray[]=forum
 #ClassFilterArray[]=...
 
 */ ?>

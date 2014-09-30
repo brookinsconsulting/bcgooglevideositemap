@@ -14,7 +14,7 @@ class bcgooglevideositemapInfo
     {
         return array(
             'Name' => "<a href='http://bitbucket.org/brookinsconsulting/bcgooglevideositemap'>BC GoogleVideoSitemap</a>",
-            'Version' => "0.0.4",
+            'Version' => "0.1.0",
             'Copyright' => "Copyright (C) 1999 - 2015 <a href='http://brookinsconsulting.com'>Brookins Consulting</a> and <a href='http://thinkcreative.com'>Think Creative</a>",
             'Author' => "Brookins Consulting",
             'License' => "GNU General Public License"
