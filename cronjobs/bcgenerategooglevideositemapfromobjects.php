@@ -17,7 +17,7 @@ if( !$isQuiet )
 
 // Fetch ini settings
 $ini = eZINI::instance( 'site.ini' );
-$sitemapINI = eZINI::instance( 'bcgooglevideositemaps.ini' );
+$sitemapINI = eZINI::instance( 'bcgooglevideositemap.ini' );
 
 // Test for and fetch ini settings
 if( $sitemapINI->hasVariable( 'BCGoogleVideoSitemapSettings', 'SitemapRootNodeID' ) &&
@@ -29,7 +29,6 @@ if( $sitemapINI->hasVariable( 'BCGoogleVideoSitemapSettings', 'SitemapRootNodeID
     $sitemapINI->hasVariable( 'BCGoogleVideoSitemapSettings', 'SiteSectionExcludeID' ) &&
     $sitemapINI->hasVariable( 'BCGoogleVideoSitemapSettings', 'SiteFetchDepth' ) &&
     $sitemapINI->hasVariable( 'BCGoogleVideoSitemapSettings', 'SiteFetchLimit' ) &&
-    $sitemapINI->hasVariable( 'BCGoogleVideoSitemapSettings', 'SiteVideoPlayerSWF' ) &&
     $ini->hasVariable( 'SiteSettings', 'SiteURL' ) )
 {
     $sitemapRootNodeID = $sitemapINI->variable( 'BCGoogleVideoSitemapSettings', 'SitemapRootNodeID' );
@@ -92,156 +91,159 @@ $root = $dom->appendChild( $root );
 // Generate XML content
 foreach( $nodeArray as $subTreeNode )
 {
-    // Build url alias string
-    $urlAlias = $siteURLProtocol . '://' . $siteURL . '/' . $subTreeNode->attribute( 'url_alias' );
+   // Build url alias string
+   $urlAlias = $siteURLProtocol . '://' . $siteURL . '/' . $subTreeNode->attribute( 'url_alias' );
 
-    // Fetch object properties
-    $object = $subTreeNode->object();
-    $objectName = $subTreeNode->attribute('name');
+   // Fetch object properties
+   $object = $subTreeNode->object();
+   $objectName = $subTreeNode->attribute('name');
 
-    $depth = $subTreeNode->attribute( 'depth' );
-    $modified = date( "c" , $object->attribute( 'modified' ) );
-    $publishedDateTimeStampText = date( "c" , $object->attribute( 'published' ) );
+   $depth = $subTreeNode->attribute( 'depth' );
+   $modified = date( "c" , $object->attribute( 'modified' ) );
+   $publishedDateTimeStampText = date( "c" , $object->attribute( 'published' ) );
 
-    $objectDataMap = $subTreeNode->dataMap();
-    $objectAttributeVideo = $objectDataMap['video'];
-    $objectAttributeVideoContent = $objectAttributeVideo->content();
+   $objectDataMap = $subTreeNode->dataMap();
+   $objectAttributeVideo = $objectDataMap['video'];
+   $objectAttributeVideoContent = $objectAttributeVideo->content();
 
-    if( $objectAttributeVideo->attribute( 'has_content' ) == true )
-    {
-        $objectAttributeVideoContentAttributes = $objectAttributeVideoContent->Attributes;
+   if( $objectAttributeVideo->attribute( 'has_content' ) == true )
+   {
+       $objectAttributeVideoContentAttributes = $objectAttributeVideoContent->Attributes;
 
-        if( $objectAttributeVideoContentAttributes['response'][0]['status'] != 'error' && isset( $objectAttributeVideoContentAttributes['thumb'] ) )
-        {
-            $objectAttributeVideoContentAttributeThumbnail = $objectAttributeVideoContentAttributes['thumb'];
-            //$objectAttributeVideoContentAttributeDownload = $objectAttributeVideoContentAttributes['download'];
-            $objectAttributeVideoContentAttributeDownload = $objectAttributeVideoContentAttributes['response'][1]['conversions'][0]['link'];
-            $objectAttributeVideoContentAttributeDownload = $objectAttributeVideoContentAttributes['response'][1]['conversions'][0]['link']['protocol'] . '://' . $objectAttributeVideoContentAttributes['response'][1]['conversions'][0]['link']['address'] . $objectAttributeVideoContentAttributes['response'][1]['conversions'][0]['link']['path'];
-            $objectAttributeVideoContentAttributeResponce = $objectAttributeVideoContentAttributes['response'];
-            $objectAttributeVideoContentAttributeResponceVideoDuration = round( $objectAttributeVideoContentAttributes['response'][1]['conversions'][0]['duration'] );
-            $objectAttributeDescriptionContentText = trim( strip_tags( $objectDataMap['summary']->content()->attribute('output')->attribute('output_text') ) );
+       if( $objectAttributeVideoContentAttributes['response'][0]['status'] != 'error' && isset( $objectAttributeVideoContentAttributes['thumb'] ) )
+       {
+           $objectAttributeVideoContentAttributeThumbnail = $objectAttributeVideoContentAttributes['thumb'];
+           //$objectAttributeVideoContentAttributeDownload = $objectAttributeVideoContentAttributes['download'];
+           $objectAttributeVideoContentAttributeDownload = $objectAttributeVideoContentAttributes['response'][1]['conversions'][0]['link'];
+           $objectAttributeVideoContentAttributeDownload = $objectAttributeVideoContentAttributes['response'][1]['conversions'][0]['link']['protocol'] . '://' . $objectAttributeVideoContentAttributes['response'][1]['conversions'][0]['link']['address'] . $objectAttributeVideoContentAttributes['response'][1]['conversions'][0]['link']['path'];
+           $objectAttributeVideoContentAttributeResponce = $objectAttributeVideoContentAttributes['response'];
+           $objectAttributeVideoContentAttributeResponceVideoDuration = round( $objectAttributeVideoContentAttributes['response'][1]['conversions'][0]['duration'] );
+           $objectAttributeDescriptionContentText = trim( strip_tags( $objectDataMap['summary']->content()->attribute('output')->attribute('output_text') ) );
 
-            // Create new url element
-            $node = $dom->createElement( $xmlNode );
+           // Create new url element
+           $node = $dom->createElement( $xmlNode );
 
-            // append to root node
-            $node = $root->appendChild( $node );
+           // append to root node
+           $node = $root->appendChild( $node );
 
-            // create new url subnode
-            $subNode = $dom->createElement( $xmlSubNodes[0] );
-            $subNode = $node->appendChild( $subNode );
+           // create new url subnode
+           $subNode = $dom->createElement( $xmlSubNodes[0] );
+           $subNode = $node->appendChild( $subNode );
 
-            // set text node with data
-            $date = $dom->createTextNode( $urlAlias );
-            $date = $subNode->appendChild( $date );
+           // set text node with data
+           $date = $dom->createTextNode( $urlAlias );
+           $date = $subNode->appendChild( $date );
 
-            // create modified subnode
-            $subNode = $dom->createElement( $xmlSubNodes[1] );
-            $subNode = $node->appendChild( $subNode );
+           // create modified subnode
+           $subNode = $dom->createElement( $xmlSubNodes[1] );
+           $subNode = $node->appendChild( $subNode );
 
-            // set data
-            $lastmod = $dom->createTextNode( $modified );
-            $lastmod = $subNode->appendChild( $lastmod );
+           // set data
+           $lastmod = $dom->createTextNode( $modified );
+           $lastmod = $subNode->appendChild( $lastmod );
 
-            // Create new video:video element
-            $videoNode = $dom->createElement( $xmlVideoNode );
+           // Create new video:video element
+           $videoNode = $dom->createElement( $xmlVideoNode );
 
-            // append to video node
-            $videoNode = $node->appendChild( $videoNode );
+           // append to video node
+           $videoNode = $node->appendChild( $videoNode );
 
-            // Create new video:thumbnail_loc element
-            $videoThumnail = $dom->createElement( $xmlVideoSubNodes[0] );
+           // Create new video:thumbnail_loc element
+           $videoThumnail = $dom->createElement( $xmlVideoSubNodes[0] );
 
-            // append to video node
-            $videoThumnail = $videoNode->appendChild( $videoThumnail );
+           // append to video node
+           $videoThumnail = $videoNode->appendChild( $videoThumnail );
 
-            // set text videoThumnail with data
-            $videoThumbnailLoc = $dom->createTextNode( $objectAttributeVideoContentAttributeThumbnail );
-            $videoThumbnailLoc = $videoThumnail->appendChild( $videoThumbnailLoc );
+           // set text videoThumnail with data
+           $videoThumbnailLoc = $dom->createTextNode( $objectAttributeVideoContentAttributeThumbnail );
+           $videoThumbnailLoc = $videoThumnail->appendChild( $videoThumbnailLoc );
 
-            // Create new video:title element
-            $videoTitle = $dom->createElement( $xmlVideoSubNodes[1] );
+           // Create new video:title element
+           $videoTitle = $dom->createElement( $xmlVideoSubNodes[1] );
 
-            // append to video sub node
-            $videoTitle = $videoNode->appendChild( $videoTitle );
+           // append to video sub node
+           $videoTitle = $videoNode->appendChild( $videoTitle );
 
-            // set text videoTitle with data
-            $videoTitleText = $dom->createTextNode( $objectName );
-            $videoTitleText = $videoTitle->appendChild( $videoTitleText );
+           // set text videoTitle with data
+           $videoTitleText = $dom->createTextNode( $objectName );
+           $videoTitleText = $videoTitle->appendChild( $videoTitleText );
 
-            // Create new video:description element
-            $videoDescription = $dom->createElement( $xmlVideoSubNodes[2] );
+           // Create new video:description element
+           $videoDescription = $dom->createElement( $xmlVideoSubNodes[2] );
 
-            // append to video sub node
-            $videoDescription = $videoNode->appendChild( $videoDescription );
+           // append to video sub node
+           $videoDescription = $videoNode->appendChild( $videoDescription );
 
-            // set text videoDescription with data
-            $videoTitleText = $dom->createTextNode( $objectAttributeDescriptionContentText );
-            $videoTitleText = $videoDescription->appendChild( $videoTitleText );
+           // set text videoDescription with data
+           $videoTitleText = $dom->createTextNode( $objectAttributeDescriptionContentText );
+           $videoTitleText = $videoDescription->appendChild( $videoTitleText );
 
-            // Create new video:content_loc element
-            $videoContentLoc = $dom->createElement( $xmlVideoSubNodes[3] );
+           // Create new video:content_loc element
+           $videoContentLoc = $dom->createElement( $xmlVideoSubNodes[3] );
 
-            // append to video sub node
-            $videoContentLoc = $videoNode->appendChild( $videoContentLoc );
+           // append to video sub node
+           $videoContentLoc = $videoNode->appendChild( $videoContentLoc );
 
-            // set text videoContentLoc with data
-            $videoContentLocText = $dom->createTextNode( $objectAttributeVideoContentAttributeDownload );
-            $videoContentLocText = $videoContentLoc->appendChild( $videoContentLocText );
+           // set text videoContentLoc with data
+           $videoContentLocText = $dom->createTextNode( $objectAttributeVideoContentAttributeDownload );
+           $videoContentLocText = $videoContentLoc->appendChild( $videoContentLocText );
 
-            // Create new video:player_loc element
-            $videoPlayerLoc = $dom->createElement( $xmlVideoSubNodes[4] );
-            $videoPlayerLoc->setAttribute( "allow_embed", "yes" );
-            $videoPlayerLoc->setAttribute( "autoplay", "ap=1" );
+           if( $objectAttributeVideoPlayerUrl != '' )
+           {
+               // Create new video:player_loc element
+               $videoPlayerLoc = $dom->createElement( $xmlVideoSubNodes[4] );
+               $videoPlayerLoc->setAttribute( "allow_embed", "yes" );
+               $videoPlayerLoc->setAttribute( "autoplay", "ap=1" );
 
-            // append to video sub node
-            $videoPlayerLoc = $videoNode->appendChild( $videoPlayerLoc );
+               // append to video sub node
+               $videoPlayerLoc = $videoNode->appendChild( $videoPlayerLoc );
 
-            // set text videoPlayerLoc with data
-            $videoPlayerLocText = $dom->createTextNode( $objectAttributeVideoPlayerUrl );
-            $videoPlayerLocText = $videoPlayerLoc->appendChild( $videoPlayerLocText );
+               // set text videoPlayerLoc with data
+               $videoPlayerLocText = $dom->createTextNode( $objectAttributeVideoPlayerUrl );
+               $videoPlayerLocText = $videoPlayerLoc->appendChild( $videoPlayerLocText );
+           }
 
-            // Create new video:duration element
-            $videoDuration = $dom->createElement( $xmlVideoSubNodes[5] );
+           // Create new video:duration element
+           $videoDuration = $dom->createElement( $xmlVideoSubNodes[5] );
 
-            // append to video sub node
-            $videoDuration = $videoNode->appendChild( $videoDuration );
+           // append to video sub node
+           $videoDuration = $videoNode->appendChild( $videoDuration );
 
-            // set text videoDuration with data
-            $videoDurationText = $dom->createTextNode( $objectAttributeVideoContentAttributeResponceVideoDuration );
-            $videoDurationText = $videoDuration->appendChild( $videoDurationText );
+           // set text videoDuration with data
+           $videoDurationText = $dom->createTextNode( $objectAttributeVideoContentAttributeResponceVideoDuration );
+           $videoDurationText = $videoDuration->appendChild( $videoDurationText );
 
-            // Create new video:publication_date element
-            $videoPublicationDate = $dom->createElement( $xmlVideoSubNodes[6] );
+           // Create new video:publication_date element
+           $videoPublicationDate = $dom->createElement( $xmlVideoSubNodes[6] );
 
-            // append to video sub node
-            $videoPublicationDate = $videoNode->appendChild( $videoPublicationDate );
+           // append to video sub node
+           $videoPublicationDate = $videoNode->appendChild( $videoPublicationDate );
 
-            // set text videoPublicationDate with data
-            $videoPublicationDateText = $dom->createTextNode( $publishedDateTimeStampText );
-            $videoPublicationDateText = $videoPublicationDate->appendChild( $videoPublicationDateText );
+           // set text videoPublicationDate with data
+           $videoPublicationDateText = $dom->createTextNode( $publishedDateTimeStampText );
+           $videoPublicationDateText = $videoPublicationDate->appendChild( $videoPublicationDateText );
 
-            // Create new video:family_friendly element
-            $videoFamilyFriendly = $dom->createElement( $xmlVideoSubNodes[7] );
+           // Create new video:family_friendly element
+           $videoFamilyFriendly = $dom->createElement( $xmlVideoSubNodes[7] );
 
-            // append to video sub node
-            $videoFamilyFriendly = $videoNode->appendChild( $videoFamilyFriendly );
+           // append to video sub node
+           $videoFamilyFriendly = $videoNode->appendChild( $videoFamilyFriendly );
 
-            // set text videoContentLoc with data
-            $videoFamilyFriendlyText = $dom->createTextNode( 'yes' );
-            $videoFamilyFriendlyText = $videoFamilyFriendly->appendChild( $videoFamilyFriendlyText );
+           // set text videoContentLoc with data
+           $videoFamilyFriendlyText = $dom->createTextNode( 'yes' );
+           $videoFamilyFriendlyText = $videoFamilyFriendly->appendChild( $videoFamilyFriendlyText );
 
-            // Create new video:live element
-            $videoLive = $dom->createElement( $xmlVideoSubNodes[8] );
+           // Create new video:live element
+           $videoLive = $dom->createElement( $xmlVideoSubNodes[8] );
 
-            // append to video sub node
-            $videoLive = $videoNode->appendChild( $videoLive );
+           // append to video sub node
+           $videoLive = $videoNode->appendChild( $videoLive );
 
-            // set text videoContentLoc with data
-            $videoLiveText = $dom->createTextNode( 'no' );
-            $videoLiveText = $videoLive->appendChild( $videoLiveText );
-        }
-    }
+           // set text videoContentLoc with data
+           $videoLiveText = $dom->createTextNode( 'no' );
+           $videoLiveText = $videoLive->appendChild( $videoLiveText );
+       }
+   }
 }
 
 // Write XML file to disk
