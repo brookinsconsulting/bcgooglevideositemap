@@ -11,7 +11,8 @@ SiteURLProtocol=https
 SiteSectionExcludeID=13
 SiteFetchDepth=10
 SiteFetchLimit=50000
-SiteVideoPlayerSWF=//assets-jp.jwpsrv.com/player/6/694867/jwplayer.flash.swf
+#SiteVideoPlayerSWF=//assets-jp.jwpsrv.com/player/6/694867/jwplayer.flash.swf
+SiteVideoPlayerSWF=
 VideoObjectClassIdentifiers[]
 VideoObjectClassIdentifiers[]=botr
 VideoObjectClassIdentifiers[]=video
