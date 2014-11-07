@@ -17,7 +17,7 @@ if( !$isQuiet )
 
 // Fetch ini settings
 $ini = eZINI::instance( 'site.ini' );
-$sitemapINI = eZINI::instance( 'bcgooglevideositemaps.ini' );
+$sitemapINI = eZINI::instance( 'bcgooglevideositemap.ini' );
 
 // Test for and fetch ini settings
 if( $sitemapINI->hasVariable( 'BCGoogleVideoSitemapSettings', 'SitemapRootNodeID' ) &&
@@ -29,7 +29,6 @@ if( $sitemapINI->hasVariable( 'BCGoogleVideoSitemapSettings', 'SitemapRootNodeID
     $sitemapINI->hasVariable( 'BCGoogleVideoSitemapSettings', 'SiteSectionExcludeID' ) &&
     $sitemapINI->hasVariable( 'BCGoogleVideoSitemapSettings', 'SiteFetchDepth' ) &&
     $sitemapINI->hasVariable( 'BCGoogleVideoSitemapSettings', 'SiteFetchLimit' ) &&
-    $sitemapINI->hasVariable( 'BCGoogleVideoSitemapSettings', 'SiteVideoPlayerSWF' ) &&
     $sitemapINI->hasVariable( 'BCGoogleVideoSitemapSettings', 'VideoObjectClassIdentifiers' ) &&
     $sitemapINI->hasVariable( 'BCGoogleVideoSitemapSettings', 'VideoObjectClassAttributeIdentifier' ) &&
     $ini->hasVariable( 'SiteSettings', 'SiteURL' ) )
@@ -148,10 +147,11 @@ foreach( $nodeArray as $subTreeNode )
                 if( $objectEmbededRelatedObjectAttributeVideoContentAttributes['response'][0]['status'] != 'error' && isset( $objectEmbededRelatedObjectAttributeVideoContentAttributes['thumb'] ) )
                 {
                     $objectEmbededRelatedObjectAttributeVideoContentAttributeThumbnail = $objectEmbededRelatedObjectAttributeVideoContentAttributes['thumb'];
-                    $objectEmbededRelatedObjectAttributeVideoContentAttributeDownload = $objectEmbededRelatedObjectAttributeVideoContentAttributes['response'][1]['conversions'][0]['link'];
-                    $objectEmbededRelatedObjectAttributeVideoContentAttributeDownload = $objectEmbededRelatedObjectAttributeVideoContentAttributes['response'][1]['conversions'][0]['link']['protocol'] . '://' . $objectEmbededRelatedObjectAttributeVideoContentAttributes['response'][1]['conversions'][0]['link']['address'] . $objectEmbededRelatedObjectAttributeVideoContentAttributes['response'][1]['conversions'][0]['link']['path'];
+                    $objectEmbededRelatedObjectAttributeVideoContentAttributeDownloadMetaDetails = array_reverse( $objectEmbededRelatedObjectAttributeVideoContentAttributes['response'][1]['conversions'] )[0];
+                    $objectEmbededRelatedObjectAttributeVideoContentAttributeDownload = $objectEmbededRelatedObjectAttributeVideoContentAttributeDownloadMetaDetails['link'];
+                    $objectEmbededRelatedObjectAttributeVideoContentAttributeDownload = $objectEmbededRelatedObjectAttributeVideoContentAttributeDownloadMetaDetails['link']['protocol'] . '://' . $objectEmbededRelatedObjectAttributeVideoContentAttributeDownloadMetaDetails['link']['address'] . $objectEmbededRelatedObjectAttributeVideoContentAttributeDownloadMetaDetails['link']['path'];
                     $objectEmbededRelatedObjectAttributeVideoContentAttributeResponce = $objectEmbededRelatedObjectAttributeVideoContentAttributes['response'];
-                    $objectEmbededRelatedObjectAttributeVideoContentAttributeResponceVideoDuration = round( $objectEmbededRelatedObjectAttributeVideoContentAttributes['response'][1]['conversions'][0]['duration'] );
+                    $objectEmbededRelatedObjectAttributeVideoContentAttributeResponceVideoDuration = round( $objectEmbededRelatedObjectAttributeVideoContentAttributeDownloadMetaDetails['duration'] );
                     $objectAttributeDescriptionContentText = trim( strip_tags( $objectEmbededRelatedObjectDataMap['summary']->content()->attribute('output')->attribute('output_text') ) );
 
                     // Create new video:video element
@@ -200,17 +200,20 @@ foreach( $nodeArray as $subTreeNode )
                     $videoContentLocText = $dom->createTextNode( $objectEmbededRelatedObjectAttributeVideoContentAttributeDownload );
                     $videoContentLocText = $videoContentLoc->appendChild( $videoContentLocText );
 
-                    // Create new video:player_loc element
-                    $videoPlayerLoc = $dom->createElement( $xmlVideoSubNodes[4] );
-                    $videoPlayerLoc->setAttribute( "allow_embed", "yes" );
-                    $videoPlayerLoc->setAttribute( "autoplay", "ap=1" );
+                    if( $objectAttributeVideoPlayerUrl != '' )
+                    {
+                        // Create new video:player_loc element
+                        $videoPlayerLoc = $dom->createElement( $xmlVideoSubNodes[4] );
+                        $videoPlayerLoc->setAttribute( "allow_embed", "yes" );
+                        $videoPlayerLoc->setAttribute( "autoplay", "ap=1" );
 
-                    // append to video sub node
-                    $videoPlayerLoc = $videoNode->appendChild( $videoPlayerLoc );
+                        // append to video sub node
+                        $videoPlayerLoc = $videoNode->appendChild( $videoPlayerLoc );
 
-                    // set text videoPlayerLoc with data
-                    $videoPlayerLocText = $dom->createTextNode( $objectAttributeVideoPlayerUrl );
-                    $videoPlayerLocText = $videoPlayerLoc->appendChild( $videoPlayerLocText );
+                        // set text videoPlayerLoc with data
+                        $videoPlayerLocText = $dom->createTextNode( $objectAttributeVideoPlayerUrl );
+                        $videoPlayerLocText = $videoPlayerLoc->appendChild( $videoPlayerLocText );
+                    }
 
                     // Create new video:duration element
                     $videoDuration = $dom->createElement( $xmlVideoSubNodes[5] );
