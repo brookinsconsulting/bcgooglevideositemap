@@ -114,11 +114,12 @@ foreach( $nodeArray as $subTreeNode )
        {
            $objectAttributeVideoContentAttributeThumbnail = $objectAttributeVideoContentAttributes['thumb'];
            //$objectAttributeVideoContentAttributeDownload = $objectAttributeVideoContentAttributes['download'];
-           $objectAttributeVideoContentAttributeDownload = $objectAttributeVideoContentAttributes['response'][1]['conversions'][0]['link'];
-           $objectAttributeVideoContentAttributeDownload = $objectAttributeVideoContentAttributes['response'][1]['conversions'][0]['link']['protocol'] . '://' . $objectAttributeVideoContentAttributes['response'][1]['conversions'][0]['link']['address'] . $objectAttributeVideoContentAttributes['response'][1]['conversions'][0]['link']['path'];
+           $objectAttributeVideoContentAttributeDownloadMetaDetails = array_reverse( $objectAttributeVideoContentAttributes['response'][1]['conversions'] )[0];
+           $objectAttributeVideoContentAttributeDownload = $objectAttributeVideoContentAttributeDownloadMetaDetails['link'];
+           $objectAttributeVideoContentAttributeDownload = $objectAttributeVideoContentAttributeDownloadMetaDetails['link']['protocol'] . '://' . $objectAttributeVideoContentAttributeDownloadMetaDetails['link']['address'] . $objectAttributeVideoContentAttributeDownloadMetaDetails['link']['path'];
            $objectAttributeVideoContentAttributeResponce = $objectAttributeVideoContentAttributes['response'];
-           $objectAttributeVideoContentAttributeResponceVideoDuration = round( $objectAttributeVideoContentAttributes['response'][1]['conversions'][0]['duration'] );
-           $objectAttributeDescriptionContentText = trim( strip_tags( $objectDataMap['summary']->content()->attribute('output')->attribute('output_text') ) );
+           $objectAttributeVideoContentAttributeResponceVideoDuration = round( $objectAttributeVideoContentAttributeDownloadMetaDetails['duration'] );
+           $objectAttributeDescriptionContentText = trim( strip_tags( $objectEmbededRelatedObjectDataMap['summary']->content()->attribute('output')->attribute('output_text') ) );
 
            // Create new url element
            $node = $dom->createElement( $xmlNode );
