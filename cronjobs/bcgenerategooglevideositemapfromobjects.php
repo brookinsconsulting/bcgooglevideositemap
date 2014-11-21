@@ -114,7 +114,8 @@ foreach( $nodeArray as $subTreeNode )
        {
            $objectAttributeVideoContentAttributeThumbnail = $objectAttributeVideoContentAttributes['thumb'];
            //$objectAttributeVideoContentAttributeDownload = $objectAttributeVideoContentAttributes['download'];
-           $objectAttributeVideoContentAttributeDownloadMetaDetails = array_reverse( $objectAttributeVideoContentAttributes['response'][1]['conversions'] )[0];
+           $objectAttributeVideoContentAttributeDownloadMetaDetails = array_reverse( $objectAttributeVideoContentAttributes['response'][1]['conversions'] );
+           $objectAttributeVideoContentAttributeDownloadMetaDetails = $objectAttributeVideoContentAttributeDownloadMetaDetails[0];
            $objectAttributeVideoContentAttributeDownload = $objectAttributeVideoContentAttributeDownloadMetaDetails['link'];
            $objectAttributeVideoContentAttributeDownload = $objectAttributeVideoContentAttributeDownloadMetaDetails['link']['protocol'] . '://' . $objectAttributeVideoContentAttributeDownloadMetaDetails['link']['address'] . $objectAttributeVideoContentAttributeDownloadMetaDetails['link']['path'];
            $objectAttributeVideoContentAttributeResponce = $objectAttributeVideoContentAttributes['response'];
@@ -245,6 +246,12 @@ foreach( $nodeArray as $subTreeNode )
            $videoLiveText = $videoLive->appendChild( $videoLiveText );
        }
    }
+}
+
+// Create XML Sitemap storage directory if it does not already exist
+if ( !file_exists( $sitemapPath ) && !is_dir( $sitemapPath ) )
+{
+    mkdir( $sitemapPath, 0775 );
 }
 
 // Write XML file to disk

@@ -147,7 +147,8 @@ foreach( $nodeArray as $subTreeNode )
                 if( $objectEmbededRelatedObjectAttributeVideoContentAttributes['response'][0]['status'] != 'error' && isset( $objectEmbededRelatedObjectAttributeVideoContentAttributes['thumb'] ) )
                 {
                     $objectEmbededRelatedObjectAttributeVideoContentAttributeThumbnail = $objectEmbededRelatedObjectAttributeVideoContentAttributes['thumb'];
-                    $objectEmbededRelatedObjectAttributeVideoContentAttributeDownloadMetaDetails = array_reverse( $objectEmbededRelatedObjectAttributeVideoContentAttributes['response'][1]['conversions'] )[0];
+                    $objectEmbededRelatedObjectAttributeVideoContentAttributeDownloadMetaDetails = array_reverse( $objectEmbededRelatedObjectAttributeVideoContentAttributes['response'][1]['conversions'] );
+                    $objectEmbededRelatedObjectAttributeVideoContentAttributeDownloadMetaDetails = $objectEmbededRelatedObjectAttributeVideoContentAttributeDownloadMetaDetails[0];
                     $objectEmbededRelatedObjectAttributeVideoContentAttributeDownload = $objectEmbededRelatedObjectAttributeVideoContentAttributeDownloadMetaDetails['link'];
                     $objectEmbededRelatedObjectAttributeVideoContentAttributeDownload = $objectEmbededRelatedObjectAttributeVideoContentAttributeDownloadMetaDetails['link']['protocol'] . '://' . $objectEmbededRelatedObjectAttributeVideoContentAttributeDownloadMetaDetails['link']['address'] . $objectEmbededRelatedObjectAttributeVideoContentAttributeDownloadMetaDetails['link']['path'];
                     $objectEmbededRelatedObjectAttributeVideoContentAttributeResponce = $objectEmbededRelatedObjectAttributeVideoContentAttributes['response'];
@@ -258,6 +259,12 @@ foreach( $nodeArray as $subTreeNode )
             }
         }
     }
+}
+
+// Create XML Sitemap storage directory if it does not already exist
+if ( !file_exists( $sitemapPath ) && !is_dir( $sitemapPath ) )
+{
+    mkdir( $sitemapPath, 0775 );
 }
 
 // Write XML video sitemap data file to disk
